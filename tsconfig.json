@@ -17,6 +17,7 @@
 			"@lib/*": ["lib/*"],
 			"@utils/*": ["utils/*"],
 			"@components/*": ["components/*"],
+			"@data/*": ["data/*"],
 			"@layouts/*": ["layouts/*"],
 			"@assets/*": ["assets/*"],
 			"@pages/*": ["pages/*"]
