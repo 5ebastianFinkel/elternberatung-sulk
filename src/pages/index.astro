@@ -1,18 +1,575 @@
 ---
-import About from '@components/About.astro';
-import Contact from '@components/Contact.astro';
-import Hero from '@components/Hero.astro';
-import Projects from '@components/Projects.astro';
-import BackToTop from '@components/ui/BackToTop.astro';
+import Skyline from '@components/Skyline.astro';
+import {
+	ablauf,
+	angebote,
+	ansatz,
+	fragen,
+	kontakt,
+	kontaktLink,
+	praxis,
+	rechtliches,
+	themen,
+	ueberMich,
+} from '@data/inhalt';
 import Layout from '@layouts/Layout.astro';
+
+const navigation = [
+	{ titel: 'Ablauf', href: '#ablauf' },
+	{ titel: 'Angebote', href: '#angebote' },
+	{ titel: 'Über mich', href: '#ueber-mich' },
+	{ titel: 'Fragen', href: '#fragen' },
+];
 ---
 
 <Layout>
+	<div class="hero">
+		<header class="kopf innen">
+			<a href="#" class="marke">{praxis.name}</a>
+			<nav aria-label="Hauptnavigation">
+				<ul>
+					{navigation.map((n) => <li><a href={n.href}>{n.titel}</a></li>)}
+				</ul>
+			</nav>
+		</header>
+		<div class="hero-text innen">
+			<h1><span>Gute Nacht,</span> <span>Münster.</span></h1>
+			<p class="lead">
+				Ich bin {praxis.name} und helfe Familien mit Babys und Kleinkindern, wieder mehr zu
+				schlafen – bei dir zu Hause oder online.
+			</p>
+			<div class="aktion">
+				<a class="fenster-knopf" href={kontaktLink}>{kontakt.cta}</a>
+				<span>Kostenlos, ca. 20 Minuten am Telefon</span>
+			</div>
+		</div>
+		<Skyline />
+	</div>
+
 	<main>
-		<Hero />
-		<About />
-		<Projects />
-		<Contact />
-		<BackToTop />
+		<section class="abschnitt innen themen-block" aria-labelledby="themen">
+			<h2 id="themen">Wobei ich helfe</h2>
+			<ul class="themen">
+				{themen.map((t) => <li>{t}</li>)}
+			</ul>
+			<p class="ansatz">{ansatz}</p>
+		</section>
+
+		<section id="ablauf" class="ablauf-block">
+			<div class="innen">
+				<h2>So läuft die Beratung</h2>
+				<ol class="bogengang">
+					{
+						ablauf.map((s, i) => (
+							<li>
+								<span class="nummer">{i + 1}</span>
+								<h3>{s.titel}</h3>
+								<p class="dauer">{s.dauer}</p>
+								<p>{s.text}</p>
+							</li>
+						))
+					}
+				</ol>
+			</div>
+		</section>
+
+		<section id="angebote" class="abschnitt innen">
+			<h2>Angebote</h2>
+			<p class="einleitung">
+				Alle Beratungen bei dir zu Hause in {praxis.ort} und Umgebung oder per Video.
+			</p>
+			<div class="angebote">
+				{
+					angebote.map((a) => (
+						<article class="blatt">
+							<h3>{a.titel}</h3>
+							<p class="fuer">{a.fuer}</p>
+							<ul>
+								{a.umfang.map((u) => <li>{u}</li>)}
+							</ul>
+							<p class="preis">{a.preis}</p>
+						</article>
+					))
+				}
+			</div>
+		</section>
+
+		<section id="ueber-mich" class="abschnitt innen ueber">
+			<div class="foto" role="img" aria-label={ueberMich.fotoAlt}>
+				<span>Foto von {praxis.vorname}</span>
+			</div>
+			<div>
+				<h2>{ueberMich.titel}</h2>
+				{ueberMich.absaetze.map((a) => <p>{a}</p>)}
+			</div>
+		</section>
+
+		<section id="fragen" class="abschnitt innen fragen-block">
+			<h2>Häufige Fragen</h2>
+			<div class="fragen">
+				{
+					fragen.map((f) => (
+						<details>
+							<summary>{f.frage}</summary>
+							<p>{f.antwort}</p>
+						</details>
+					))
+				}
+			</div>
+		</section>
+
+		<section id="kontakt" class="kontakt">
+			<div class="innen">
+				<h2>{kontakt.titel}</h2>
+				<p>{kontakt.text}</p>
+				<a class="fenster-knopf gross" href={kontaktLink}>{kontakt.cta}</a>
+				<ul class="wege">
+					<li><a href={`mailto:${praxis.email}`}>{praxis.email}</a></li>
+					<li>{praxis.telefon}</li>
+					<li>{praxis.instagram}</li>
+				</ul>
+			</div>
+		</section>
 	</main>
+
+	<footer class="fuss">
+		<div class="fuss-innen innen">
+			<p>© {new Date().getFullYear()} {praxis.marke}</p>
+			<ul>
+				{rechtliches.map((r) => <li><a href={r.href}>{r.titel}</a></li>)}
+			</ul>
+		</div>
+	</footer>
 </Layout>
+
+<style>
+	.innen {
+		max-width: var(--c-breite);
+		margin-inline: auto;
+		padding-inline: 1.25rem;
+	}
+	@media (min-width: 768px) {
+		.innen {
+			padding-inline: 2rem;
+		}
+	}
+
+	/* Hero */
+	.hero {
+		background: var(--c-nacht);
+		color: var(--c-papier);
+		overflow: hidden;
+	}
+	.hero :focus-visible {
+		outline-color: var(--c-papier);
+	}
+	.kopf {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1.5rem;
+		padding-block: 1.25rem;
+	}
+	.marke {
+		font-family: var(--f-display);
+		font-weight: 700;
+		font-size: 1.125rem;
+		color: var(--c-papier);
+		text-decoration: none;
+	}
+	nav {
+		display: none;
+	}
+	nav ul {
+		display: flex;
+		gap: 1.75rem;
+	}
+	nav a {
+		color: var(--c-papier);
+		text-decoration: none;
+		font-weight: 500;
+	}
+	nav a:hover {
+		text-decoration: underline;
+	}
+	@media (min-width: 840px) {
+		nav {
+			display: block;
+		}
+	}
+	.hero-text {
+		padding-block: 2.5rem 1rem;
+	}
+	@media (min-width: 768px) {
+		.hero-text {
+			padding-block: 3rem 0;
+		}
+	}
+	h1 {
+		font-size: clamp(3.25rem, 1.5rem + 6vw, 6rem);
+	}
+	@media (min-width: 640px) {
+		h1 span {
+			display: block;
+		}
+	}
+	.lead {
+		margin-top: 1.5rem;
+		max-width: 32rem;
+		font-size: 1.5rem;
+		line-height: 1.45;
+	}
+	.aktion {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.75rem 1.25rem;
+		margin-top: 2rem;
+	}
+	.aktion span {
+		font-size: 1.0625rem;
+		font-weight: 500;
+		color: var(--c-nebel);
+	}
+	/* Text und Turmspitze überlappen erst, wenn genug Platz ist */
+	@media (min-width: 1200px) {
+		.hero-text {
+			margin-bottom: -6rem;
+			position: relative;
+			z-index: 1;
+		}
+		.hero :global(.skyline) {
+			margin-top: -2rem;
+		}
+	}
+
+	/* Der Knopf ist das letzte erleuchtete Fenster */
+	.fenster-knopf {
+		display: inline-block;
+		padding: 1rem 1.5rem 0.875rem;
+		border-radius: 1.5rem 1.5rem 0.375rem 0.375rem;
+		background: var(--c-fenster);
+		color: var(--c-tinte);
+		font-weight: 700;
+		text-decoration: none;
+		line-height: 1.2;
+		box-shadow: 0 0 0 3px var(--c-schatten), 0 0 2rem rgb(var(--c-schein) / 0.55);
+	}
+	.fenster-knopf:hover {
+		background: var(--c-fenster-hover);
+	}
+	.fenster-knopf:focus-visible {
+		outline-offset: 6px;
+	}
+	.fenster-knopf.gross {
+		margin-top: 2rem;
+		padding: 1.25rem 2rem 1.125rem;
+		font-size: 1.25rem;
+	}
+
+	/* Abschnitte */
+	.abschnitt {
+		padding-block: 4rem;
+	}
+	@media (min-width: 768px) {
+		.abschnitt {
+			padding-block: 6rem;
+		}
+	}
+	h2 {
+		font-size: clamp(2rem, 1.4rem + 2.4vw, 3rem);
+		margin-bottom: 2rem;
+	}
+	h3 {
+		font-size: 1.5rem;
+	}
+
+	.themen {
+		display: grid;
+		gap: 1rem 3rem;
+		max-width: 56rem;
+	}
+	@media (min-width: 700px) {
+		.themen {
+			grid-template-columns: 1fr 1fr;
+		}
+	}
+	.themen li {
+		position: relative;
+		padding-left: 2rem;
+	}
+	/* Kleines Fenster als Aufzählungszeichen */
+	.themen li::before {
+		content: '';
+		position: absolute;
+		left: 0;
+		top: 0.2em;
+		width: 0.875rem;
+		height: 1.125rem;
+		border-radius: 0.4375rem 0.4375rem 0.125rem 0.125rem;
+		background: var(--c-abendblau);
+	}
+	.ansatz {
+		margin-top: 3rem;
+		max-width: 42rem;
+		font-family: var(--f-text);
+		font-weight: 500;
+		font-size: clamp(1.5rem, 1.2rem + 1vw, 1.9375rem);
+		line-height: 1.35;
+	}
+
+	/* Ablauf als Bogengang */
+	.ablauf-block {
+		padding-block: 4rem;
+		background: var(--c-dunst);
+	}
+	@media (min-width: 768px) {
+		.ablauf-block {
+			padding-block: 6rem;
+		}
+	}
+	.bogengang {
+		display: grid;
+		gap: 1.25rem;
+	}
+	@media (min-width: 640px) {
+		.bogengang {
+			grid-template-columns: 1fr 1fr;
+		}
+	}
+	@media (min-width: 1024px) {
+		.bogengang {
+			grid-template-columns: repeat(4, 1fr);
+		}
+	}
+	.bogengang li {
+		padding: 2.5rem 1.5rem 1.75rem;
+		border-radius: 10rem 10rem 0.5rem 0.5rem;
+		background: var(--c-papier);
+		text-align: center;
+	}
+	.nummer {
+		display: block;
+		margin-bottom: 1rem;
+		font-family: var(--f-display);
+		font-weight: 700;
+		font-size: 3rem;
+		line-height: 1;
+		color: var(--c-nacht);
+	}
+	.dauer {
+		margin-block: 0.375rem 1rem;
+		font-weight: 500;
+		font-size: 1.0625rem;
+		color: var(--c-nacht);
+	}
+	.bogengang p:not(.dauer) {
+		font-size: 1.125rem;
+		line-height: 1.5;
+		color: var(--c-tinte-2);
+	}
+
+	/* Angebote */
+	.einleitung {
+		margin-top: -1rem;
+		color: var(--c-tinte-2);
+	}
+	.angebote {
+		display: grid;
+		gap: 1.75rem;
+		margin-top: 2.5rem;
+	}
+	@media (min-width: 900px) {
+		.angebote {
+			grid-template-columns: repeat(3, 1fr);
+		}
+	}
+	.blatt {
+		display: flex;
+		flex-direction: column;
+		padding: 1.75rem;
+		background: var(--c-blatt);
+		border-radius: 0.5rem;
+		box-shadow: 6px 6px 0 var(--c-abendblau);
+	}
+	.fuer {
+		margin-block: 0.25rem 1.25rem;
+		color: var(--c-tinte-2);
+	}
+	.blatt ul {
+		display: grid;
+		gap: 0.5rem;
+		margin-bottom: 1.5rem;
+		font-size: 1.0625rem;
+	}
+	.blatt li {
+		position: relative;
+		padding-left: 1.25rem;
+	}
+	.blatt li::before {
+		content: '';
+		position: absolute;
+		left: 0;
+		top: 0.55em;
+		width: 0.5rem;
+		height: 0.5rem;
+		border-radius: 50%;
+		background: var(--c-fenster);
+		box-shadow: 0 0 0 1.5px var(--c-schatten);
+	}
+	.preis {
+		margin-top: auto;
+		font-family: var(--f-display);
+		font-weight: 700;
+		font-size: 1.5rem;
+	}
+	/* Gleich hohe Ziffern für Dauer, Alter und Preis */
+	.dauer,
+	.fuer,
+	.blatt li,
+	.preis {
+		font-variant-numeric: lining-nums;
+	}
+
+	/* Über mich */
+	.ueber {
+		display: grid;
+		gap: 2.5rem;
+	}
+	.foto {
+		display: grid;
+		place-items: center;
+		aspect-ratio: 4 / 5;
+		max-width: 20rem;
+		border-radius: 10rem 10rem 0.75rem 0.75rem;
+		background: var(--c-dunst);
+		box-shadow: inset 0 0 0 6px var(--c-abendblau);
+		color: var(--c-tinte-2);
+		font-size: 1rem;
+	}
+	.ueber p {
+		max-width: 36rem;
+	}
+	.ueber p + p {
+		margin-top: 1rem;
+	}
+	@media (min-width: 900px) {
+		.ueber {
+			grid-template-columns: 5fr 7fr;
+			gap: 4rem;
+			align-items: center;
+		}
+		.foto {
+			justify-self: center;
+			width: 100%;
+		}
+	}
+
+	/* Fragen */
+	.fragen {
+		max-width: 48rem;
+	}
+	details {
+		border-bottom: 2px solid var(--c-dunst);
+	}
+	details:first-child {
+		border-top: 2px solid var(--c-dunst);
+	}
+	summary {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 1rem;
+		padding-block: 1.25rem;
+		font-weight: 700;
+		cursor: pointer;
+		list-style: none;
+	}
+	summary::-webkit-details-marker {
+		display: none;
+	}
+	summary::after {
+		content: '+';
+		flex: none;
+		display: grid;
+		place-items: center;
+		width: 2rem;
+		height: 2rem;
+		border-radius: 50%;
+		background: var(--c-dunst);
+		font-family: var(--f-display);
+		color: var(--c-nacht);
+		line-height: 1;
+	}
+	details[open] summary::after {
+		content: '–';
+	}
+	details p {
+		padding-bottom: 1.5rem;
+		max-width: 40rem;
+		color: var(--c-tinte-2);
+	}
+
+	/* Kontakt */
+	.kontakt {
+		padding-block: 5rem;
+		background: var(--c-nacht);
+		color: var(--c-papier);
+	}
+	@media (min-width: 768px) {
+		.kontakt {
+			padding-block: 7rem;
+		}
+	}
+	.kontakt h2 {
+		max-width: 14ch;
+		margin-bottom: 1.25rem;
+	}
+	.kontakt p {
+		max-width: 34rem;
+		color: var(--c-nebel);
+	}
+	.kontakt .fenster-knopf {
+		box-shadow: 0 0 0 3px var(--c-schatten), 0 0 3rem rgb(var(--c-schein) / 0.5);
+	}
+	.kontakt :focus-visible {
+		outline-color: var(--c-fenster);
+	}
+	.wege {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem 2rem;
+		margin-top: 2.5rem;
+		font-size: 1.0625rem;
+		font-weight: 500;
+		color: var(--c-nebel);
+	}
+	.wege a {
+		color: var(--c-papier);
+	}
+
+	/* Fußzeile */
+	.fuss {
+		background: var(--c-nacht-tief);
+		color: var(--c-nebel-tief);
+		font-size: 1.0625rem;
+		font-weight: 500;
+	}
+	.fuss :focus-visible {
+		outline-color: var(--c-papier);
+	}
+	.fuss-innen {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		gap: 1rem;
+		padding-block: 1.75rem;
+	}
+	.fuss ul {
+		display: flex;
+		gap: 1.5rem;
+	}
+	.fuss a {
+		color: inherit;
+	}
+</style>

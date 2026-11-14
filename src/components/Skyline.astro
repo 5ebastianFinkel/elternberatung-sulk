@@ -165,13 +165,13 @@ const tw = TURM_W;
 		height: clamp(15rem, 34vw, 30rem);
 	}
 	.hinten {
-		fill: var(--c-himmel-tief);
+		fill: var(--c-ferne);
 	}
 	.vorne {
-		filter: drop-shadow(-4px -3px 0 rgb(61 49 112 / 0.22));
+		filter: drop-shadow(-4px -3px 0 var(--c-mondkante));
 	}
 	.fassade {
-		fill: var(--c-sandstein);
+		fill: var(--c-fassade);
 	}
 	.bogen {
 		fill: var(--c-schatten);
@@ -187,7 +187,7 @@ const tw = TURM_W;
 		stroke-linecap: round;
 	}
 	.fenster {
-		fill: var(--c-fenster-aus);
+		fill: var(--c-abendblau);
 	}
 	@media (prefers-reduced-motion: no-preference) {
 		.fenster {
@@ -199,7 +199,7 @@ const tw = TURM_W;
 				fill: var(--c-fenster);
 			}
 			to {
-				fill: var(--c-fenster-aus);
+				fill: var(--c-abendblau);
 			}
 		}
 	}

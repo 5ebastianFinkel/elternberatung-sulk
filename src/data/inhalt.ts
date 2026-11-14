@@ -1,5 +1,4 @@
-// Gemeinsame Inhalte für alle drei Entwürfe (/entwurf-a, /entwurf-b, /entwurf-c),
-// damit sich die Entwürfe nur in der Gestaltung unterscheiden.
+// Alle Texte der Startseite an einem Ort.
 // Alles in [eckigen Klammern] ist ein Platzhalter und muss noch von Verena kommen.
 
 export const praxis = {
