@@ -1,42 +1,115 @@
 ---
-import Footer from '@components/Footer.astro';
-import Navbar from '@components/Navbar.astro';
+// „Gute Nacht, Münster“: Scherenschnitt der Stadt bei Nacht, Bilderbuch, lokal.
+import '@fontsource/alegreya/400.css';
+import '@fontsource/alegreya/500.css';
+import '@fontsource/alegreya/700.css';
+import '@fontsource/corben/400.css';
+import '@fontsource/corben/700.css';
+import { seo } from '@data/inhalt';
 import { SEO } from 'astro-seo';
-
-export interface LayoutProps {
-	title: string;
-}
-
-const { title = 'Verena Sulk | Elternberatung' } = Astro.props as LayoutProps;
 ---
 
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth" data-testid="html">
+<html lang="de">
 	<head>
-		<SEO
-			title="Elternberatung Sulk"
-			description="Verena Sulk. Eltern- und Schlafberatung in Münster, Nordrheinwestfalen. Hilfe bei Schlafproblemen."
-		/>
 		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-		<meta name="generator" content={Astro.generator} />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!-- noindex, solange die Inhalte noch Platzhalter enthalten -->
+		<SEO title={seo.titel} description={seo.beschreibung} noindex nofollow />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-
-		<title>{title}</title>
+		<meta name="theme-color" content="#113557" />
 	</head>
-	<body
-		class="mx-auto max-w-screen-xl bg-white px-5 font-sans text-white dark:bg-black xs:text-[16px] md:text-[18px]"
-	>
-		<Navbar />
+	<body>
 		<slot />
-		<Footer />
-		<style is:global>
-			/* Improve Page speed */
-			/* https://css-tricks.com/almanac/properties/c/content-visibility/ */
-			img {
-				content-visibility: auto;
-			}
-		</style>
 	</body>
 </html>
+
+<style is:global>
+	/* Farben: eine einzige Nacht. Marineblau ist die einzige Farbfamilie,
+	   Lampengelb der einzige warme Ton. Alles andere sind Hell- und
+	   Dunkelstufen davon. */
+	:root {
+		--c-nacht: #113557; /* Himmel, Kontakt, Links, Ziffern */
+		--c-nacht-tief: #0b2440; /* Fußzeile */
+		--c-ferne: #24506f; /* hintere Dächer */
+		--c-fassade: #0b2138; /* Häuser vorn */
+		--c-schatten: #05111e; /* Arkaden, Konturen */
+		--c-abendblau: #2b5174; /* dunkle Fenster, Aufzählung, Kartenschatten */
+		--c-mondkante: rgb(150 184 212 / 0.32); /* Lichtkante an den Giebeln */
+		--c-fenster: #ffc93d;
+		--c-fenster-hover: #ffd668;
+		--c-schein: 255 201 61; /* Leuchten um gelbe Knöpfe, als RGB */
+		--c-papier: #f2f5f9;
+		--c-dunst: #dde6f0;
+		--c-blatt: #fff;
+		--c-tinte: #14283e;
+		--c-tinte-2: #4a5d72;
+		--c-nebel: #c3d1e0; /* Nebentext auf Nachtblau */
+		--c-nebel-tief: #a9bbcf; /* Text in der Fußzeile */
+		--c-breite: 72rem;
+		/* Schriften: Corben nur groß und fett, Alegreya für alles Lesbare */
+		--f-display: 'Corben', Georgia, serif;
+		--f-text: 'Alegreya', Georgia, serif;
+	}
+	body {
+		background: var(--c-papier);
+		color: var(--c-tinte);
+		font-family: var(--f-text);
+		font-size: 1.1875rem;
+		line-height: 1.6;
+		-webkit-font-smoothing: antialiased;
+	}
+	@media (min-width: 768px) {
+		body {
+			font-size: 1.25rem;
+		}
+	}
+	h1,
+	h2 {
+		font-family: var(--f-display);
+		font-weight: 700;
+		font-synthesis: none;
+		letter-spacing: -0.01em;
+		line-height: 1.05;
+		text-wrap: balance;
+	}
+	h1 {
+		letter-spacing: -0.02em;
+	}
+	h3 {
+		font-family: var(--f-text);
+		font-weight: 700;
+		letter-spacing: normal;
+		line-height: 1.2;
+	}
+	p,
+	li {
+		text-wrap: pretty;
+		letter-spacing: normal;
+	}
+	/* Silbentrennung nur, wo die Zeilen schmal sind, und nur bei langen Wörtern */
+	@media (max-width: 639px) {
+		p,
+		li {
+			hyphens: auto;
+			hyphenate-limit-chars: 12 5 5;
+		}
+	}
+	a {
+		color: var(--c-nacht);
+		text-underline-offset: 0.18em;
+	}
+	:focus-visible {
+		outline: 3px solid var(--c-tinte);
+		outline-offset: 3px;
+		border-radius: 0.25rem;
+	}
+	html {
+		scroll-behavior: smooth;
+	}
+	@media (prefers-reduced-motion: reduce) {
+		html {
+			scroll-behavior: auto;
+		}
+	}
+</style>
